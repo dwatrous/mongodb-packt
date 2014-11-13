@@ -1,0 +1,38 @@
+# create SSL certificate
+cd /etc/ssl/
+
+# create a certificate for the mongod (server) process
+openssl req -newkey rsa:4096 -new -x509 -days 365 -nodes -out /etc/ssl/mongod.crt -keyout /etc/ssl/mongod.key
+cat /etc/ssl/mongod.key /etc/ssl/mongod.crt > /etc/ssl/mongod.pem
+
+# create a certificate for the mongod (server) process
+openssl req -newkey rsa:4096 -new -x509 -days 365 -nodes -out /etc/ssl/mongo-client.crt -keyout /etc/ssl/mongo-client.key
+cat /etc/ssl/mongo-client.key /etc/ssl/mongo-client.crt > /etc/ssl/mongo-client.pem
+chmod 600 /etc/ssl/mongo*
+
+##### Manual Install Linux #####
+cd ~/mongodb-src-r2.6.5/
+mkdir -p ~/mongo/data
+mkdir -p ~/mongo/logs
+mkdir -p ~/mongo/bin
+cp mongo* ~/mongo/bin/
+cp bsondump ~/mongo/bin/
+cp bsondump ~/mongo/bin/
+rm ~/mongo/bin/mongo_astyle
+
+# update configuration
+vi ~/mongo/mongo.cfg
+
+##### start mongod #####
+~/mongo/bin/mongod --config ~/mongo/mongo.cfg
+
+
+##### verify that mongod is running #####
+ps aux|grep mongo
+tail -n 200 ~/mongo/logs/mongodb.log
+# connect to the mongo shell
+~/mongo/bin/mongo localhost:16687/admin --ssl --sslCAFile /etc/ssl/mongod.pem --sslPEMKeyFile /etc/ssl/mongo-client.pem
+
+# package up files
+cd
+tar zcvf mongo-ssl.tar.gz mongo/bin

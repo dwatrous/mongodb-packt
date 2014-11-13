@@ -1,0 +1,20 @@
+#### Drop database in MongoDB ####
+mongo
+use coursetracker
+show dbs
+db.dropDatabase()
+show dbs
+
+mongorestore /opt/backup/mongodump
+
+mongo
+show dbs
+use coursetracker
+db.student.count()
+
+db.student.find({"name.first": "Desiree"}).pretty()
+db.student.find({"name.first": "Bridget"}).pretty()
+db.student.find({"name.first": "April"}).pretty()
+db.student.find({"name.first": "Mandy"}).pretty()
+
+# repeat above to restore previoius version

@@ -1,0 +1,25 @@
+# for data bulk import see bulk-data-import.js
+mongo statsdb bulk-data-import.js
+
+mongo
+use statsdb
+show collections
+
+db.statistics.find().pretty()
+
+# count examples
+db.statistics.count()
+db.statistics.count({action: "DOWNLOAD"})
+db.statistics.count({owner: ObjectId("543f227c0208373c53ba4c27")})
+db.statistics.count({owner: ObjectId("543f227c0208373c53ba4c27"), action: "DOWNLOAD"})
+
+# distinct examples
+db.statistics.distinct("action");
+db.statistics.distinct("owner");
+db.statistics.distinct("request_ip");
+db.statistics.distinct("request_ip", {owner: ObjectId("543f227c0208373c53ba4af7")});
+
+# group examples
+db.statistics.group({key: {action: 1}, reduce: function(cur, result) {result.count += 1}, initial: {count: 0}})
+db.statistics.group({key: {owner: 1}, reduce: function(cur, result) {result.count += 1}, initial: {count: 0}})
+db.statistics.group({key: {owner: 1}, cond: {action: "VIEW"}, reduce: function(cur, result) {result.count += 1}, initial: {count: 0}})

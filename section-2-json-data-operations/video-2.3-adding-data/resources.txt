@@ -1,0 +1,4 @@
+http://docs.mongodb.org/manual/tutorial/modify-documents/
+http://docs.mongodb.org/manual/reference/operator/update/
+http://docs.mongodb.org/manual/reference/object-id/
+http://api.mongodb.org/java/current/org/bson/types/ObjectId.html

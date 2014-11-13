@@ -1,0 +1,15 @@
+# for data bulk import see bulk-data-import.js
+mongo coursetracker bulk-data-import.js
+
+# for mongodump backup
+mongodump --db coursetracker --out /opt/backup/mongodump
+
+#### Make some changes in MongoDB ####
+mongo
+use coursetracker
+
+# Update
+db.student.update({"name.first": "Desiree"}, {$set: {"name": {"first": "Desiree", "middle": "Garcia", "last": "Reyes"}}});
+db.student.update({"name.first": "Bridget"}, {$set: {"email": "bridget.martinez@gmail.com"}});
+db.student.update({"name.first": "April"}, {$set: {"name": {"first": "April", "last": "Farnsworth", "maiden": "Black"}}, $push: {"test_scores": {"test": "ACT", "score": 28, "type": "retake"}}});
+db.student.update({"name.first": "Mandy"}, {$set: {"major": "Electrical Engineering"}});

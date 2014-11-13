@@ -1,0 +1,32 @@
+use statsdb
+db.statistics.insert(
+   {
+    "_id": ObjectId("543f1ec50208373c53ba39a0"),
+    "request_ip": "64.222.36.11",
+    "owner": ObjectId("543f227c0208373c53ba4b28"),
+    "request_date": ISODate("2014-09-18T04:48:14.332Z"),
+    "request_method": "GET",
+    "request_uri": "api.myapplication.com/v1/document/f9b09e246",
+    "action": "VIEW",
+    "request_time_milliseconds": 379,
+    "loc": [-121.89,37.3378],
+    cookies: ['session','admin']
+   },
+   { writeConcern: { w: "majority", wtimeout: 3000 }}
+)
+
+db.statistics.insert(
+   {
+    "_id": ObjectId("543f1ec50208373c53ba39a0"),
+    "request_ip": "64.222.36.11",
+    "owner": ObjectId("543f227c0208373c53ba4b28"),
+    "request_date": ISODate("2014-09-18T04:48:14.332Z"),
+    "request_method": "GET",
+    "request_uri": "api.myapplication.com/v1/document/f9b09e246",
+    "action": "VIEW",
+    "request_time_milliseconds": 379,
+    "loc": [-121.89,37.3378],
+    cookies: ['session','admin']
+   },
+   { writeConcern: { w: 0}}
+)

@@ -1,0 +1,24 @@
+##### Find Linux bits #####
+uname -a
+
+##### Manual Install Linux #####
+wget https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-2.6.3.tgz
+tar -xzvf mongodb-linux-x86_64-2.6.3.tgz
+mkdir -p ~/mongo/data
+mkdir -p ~/mongo/logs
+ls -la ~/mongo
+vi mongo/mongo.cfg
+
+##### start mongod #####
+~/mongodb-linux-x86_64-2.6.3/bin/mongod --config ~/mongo/mongo.cfg
+
+##### verify that mongod is running #####
+ps aux|grep mongo
+tail -n 200 /mongo/logs/mongodb.log
+~/mongodb-linux-x86_64-2.6.3/bin/mongo
+ 
+##### Package Install Linux #####
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
+echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | sudo tee /etc/apt/sources.list.d/mongodb.list
+sudo apt-get update
+sudo apt-get -y install mongodb-org

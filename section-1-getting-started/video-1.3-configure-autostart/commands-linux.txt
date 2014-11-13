@@ -1,0 +1,10 @@
+# verify runlevels on Linux
+cat /etc/init/mongod.conf|grep runlevel
+
+# restart Ubuntu Linux
+reboot
+
+# check that mongod is running
+ps aux|grep mongo
+tail -n 200 /var/logs/mongodb.log
+mongo

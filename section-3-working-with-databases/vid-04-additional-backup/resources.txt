@@ -1,0 +1,3 @@
+http://docs.mongodb.org/manual/tutorial/backup-with-filesystem-snapshots/
+http://en.wikipedia.org/wiki/Logical_Volume_Manager_(Linux)
+http://software.danielwatrous.com/mongodb-using-replica-sets-as-a-backup/

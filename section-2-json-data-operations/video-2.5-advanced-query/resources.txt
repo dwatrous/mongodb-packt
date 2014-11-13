@@ -1,0 +1,3 @@
+http://docs.mongodb.org/manual/reference/operator/query/regex/
+http://kodos.sourceforge.net/
+http://www.regular-expressions.info/

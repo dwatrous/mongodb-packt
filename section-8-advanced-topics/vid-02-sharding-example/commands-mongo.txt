@@ -1,0 +1,45 @@
+# configure replica set rs0
+rsconf = {
+  _id: "rs0",
+  members: [
+    {
+      _id: 0,
+      host: "localhost:27017"
+    }
+  ]
+}
+
+rs.initiate(rsconf)
+rs.add("localhost:27018")
+rs.addArb("localhost:30000")
+rs.status()
+
+# import bulk-data-import.js
+use statsdb
+load("bulk-data-import.js")
+
+# configure replica set rs1
+rsconf = {
+  _id: "rs1",
+  members: [
+    {
+      _id: 0,
+      host: "localhost:27019"
+    }
+  ]
+}
+
+rs.initiate(rsconf)
+rs.add("localhost:27020")
+rs.addArb("localhost:30001")
+rs.status()
+
+# from mongo shell connected to mongos, add shards
+sh.addShard("rs0/localhost:27017")
+sh.addShard("rs1/localhost:27019")
+use statsdb
+sh.enableSharding("statsdb")
+db.statistics.ensureIndex({request_ip: 1, _id: 1})
+sh.shardCollection("statsdb.statistics", {"request_ip": 1, "_id": 1})
+
+db.statistics.getShardDistribution()

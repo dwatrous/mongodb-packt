@@ -1,0 +1,3 @@
+http://docs.mongodb.org/manual/core/write-concern/
+http://docs.mongodb.org/manual/core/replica-set-write-concern/
+http://docs.mongodb.org/manual/reference/method/db.collection.insert/

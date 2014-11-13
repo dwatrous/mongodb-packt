@@ -1,0 +1,16 @@
+# pre-requisites
+sudo apt-get install -y build-essential git scons libssl-dev
+
+# download and unpackage the source
+wget https://fastdl.mongodb.org/src/mongodb-src-r2.6.5.tar.gz
+tar -xzvf mongodb-src-r2.6.5.tar.gz
+cd mongodb-src-r2.6.5/
+
+# build MongoDB with SSL support
+date
+scons --ssl all
+date
+
+# view files
+ll
+df -h

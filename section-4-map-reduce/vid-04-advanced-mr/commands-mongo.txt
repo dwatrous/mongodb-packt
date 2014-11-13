@@ -1,0 +1,70 @@
+# find out how many courses each student has
+map_number_courses = function() { 
+  this.students.forEach(function(value) {
+    emit(value, 1);
+  });
+}
+
+reduce_number_courses = function(key, values) {
+    var result = 0;
+ 
+    values.forEach(function(value) {
+      result += value;
+    });
+ 
+    return result;
+}
+
+result = db.courses.mapReduce(map_number_courses, reduce_number_courses, {out: {replace: "numbercourses"}});
+db.numbercourses.find()
+
+# course roster
+result = db.courses.mapReduce(map_number_courses, reduce_number_courses, {query: {_id: "HIST-1010"}, out: {replace: "numbercourses"}});
+db.numbercourses.find()
+
+result = db.courses.mapReduce(map_number_courses, reduce_number_courses, {query: {_id: "ENGCOMP-1010"}, out: {replace: "numbercourses"}});
+db.numbercourses.find()
+
+# highly rated
+result = db.courses.mapReduce(map_number_courses, reduce_number_courses, {query: {ratings: {$in: [5]}}, out: {replace: "numbercourses"}});
+db.numbercourses.find()
+
+# limit
+result = db.courses.mapReduce(map_number_courses, reduce_number_courses, {limit: 2, out: {replace: "numbercourses"}});
+db.numbercourses.find()
+
+# limit + sort
+result = db.courses.mapReduce(map_number_courses, reduce_number_courses, {limit: 2, sort: {description: -1}, out: {replace: "numbercourses"}});
+db.numbercourses.find()
+
+## Finalize
+map_course_ratings = function() { 
+  id = this._id;
+  
+  this.ratings.forEach(function(value) {
+    emit(id, {sum_ratings: value, num_ratings: 1});
+  });
+}
+
+reduce_course_ratings = function(key, values) {
+    var result = {sum_ratings: 0, num_ratings: 0};
+ 
+    values.forEach(function(value) {
+      result.sum_ratings += value.sum_ratings;
+      result.num_ratings += value.num_ratings;
+    });
+ 
+    return result;
+}
+
+finalize_course_ratings = function(key, reducedValue) {
+    reducedValue.avg_rating = reducedValue.sum_ratings/reducedValue.num_ratings;
+    return reducedValue;
+}
+
+result = db.courses.mapReduce(map_course_ratings, reduce_course_ratings, {out: {replace: "courseratings"}});
+db.courseratings.find();
+
+result = db.courses.mapReduce(map_course_ratings, reduce_course_ratings, {finalize: finalize_course_ratings, out: {replace: "courseratings"}});
+db.courseratings.find().sort({"value.avg_rating": -1});
+

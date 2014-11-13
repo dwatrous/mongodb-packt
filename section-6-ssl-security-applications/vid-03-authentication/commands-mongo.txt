@@ -1,0 +1,51 @@
+# create super admin user
+use admin
+db.createUser( {
+      "user": "admin",
+      "pwd": "secret",
+      "customData": {badgeNumber: 54546},
+      "roles": ["userAdmin", "dbOwner", "restore"]
+    },
+    {}
+)
+
+# show behavior before and after authenticating
+show dbs
+db.auth("admin", "secret");
+show dbs
+db.grantRolesToUser("admin", ["readWriteAnyDatabase"], {})
+show dbs
+
+# import sample data
+use statsdb
+load("bulk-data-import.js")
+
+# create statsdb user
+db.createUser( {
+      "user": "statsdb_rw",
+      "pwd": "secret",
+      "customData": {},
+      "roles": [{role: "readWrite", db: "statsdb"}]
+    },
+    {}
+)
+db.createUser( {
+      "user": "statsdb_ro",
+      "pwd": "secret",
+      "customData": {},
+      "roles": [{role: "read", db: "statsdb"}]
+    },
+    {}
+)
+
+# demonstrate auth and auth for statsdb
+use statsdb
+show collections
+db.auth("statsdb_ro", "secret");
+show collections
+db.statistics.find().limit(1).pretty()
+db.statistics.insert({test: "value"})
+
+db.auth("statsdb_rw", "secret");
+db.statistics.insert({test: "value"})
+db.statistics.find({test: "value"}).pretty()

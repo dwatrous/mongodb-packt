@@ -1,0 +1,4 @@
+http://json.org/
+http://json.parser.online.fr/beta/
+http://docs.mongodb.org/manual/reference/bson-types/
+http://bsonspec.org/

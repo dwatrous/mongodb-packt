@@ -1,0 +1,10 @@
+# Verify permissions for backups
+ls -la
+sudo chown -R mongodb:mongodb mongodump
+ls -la
+ls -la mongodump/
+
+
+chmod -R 740 mongodump
+ls -la
+

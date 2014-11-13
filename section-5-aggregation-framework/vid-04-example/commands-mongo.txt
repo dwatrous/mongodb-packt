@@ -1,0 +1,79 @@
+mongo
+use statsdb
+show collections
+
+# show 
+db.statistics.aggregate(
+[
+  {
+    $match: {action: "VIEW"}
+  },
+  {
+    $group: {
+      _id: {
+        month: {$month: "$request_date"},
+        day: {$dayOfMonth: "$request_date"},
+        year: {$year: "$request_date"}
+      },
+      requests: {$sum: 1},
+      avg_time: {$avg: "$request_time_milliseconds"},
+      max_time: {$max: "$request_time_milliseconds"},
+      min_time: {$min: "$request_time_milliseconds"},
+    }
+  },
+  {
+    $project: {
+      year: {$substr: ["$_id.year",0,-1]},
+      month: {$substr: ["$_id.month",0,-1]},
+      day: {$substr: ["$_id.day",0,-1]},
+      average: "$avg_time",
+      requests: "$requests",
+      minimum: "$min_time",
+      maximum: "$max_time"
+    }
+  },
+  {
+    $project: {
+      _id: {$concat: ["$month","-","$day","-","$year"]},
+      average: "$average",
+      requests: "$requests",
+      minimum: "$minimum",
+      maximum: "$maximum",
+      gap: {$subtract: ["$maximum", "$minimum"]}
+    }
+  },
+  {
+    $sort: {average: 1}
+  }
+]
+)
+
+
+
+# use $geoNear and unwind cookies
+db.statistics.ensureIndex({loc: "2dsphere"})
+db.statistics.aggregate(
+[
+  {
+    $geoNear: {
+      near: {
+        type: "Point",
+        coordinates: [-93.609871,41.588173]
+      },
+      distanceField: "dist.calculated",
+      includeLocs: "dist.location",
+      spherical: true
+    }
+  },
+  {$unwind: "$cookies"},
+  {
+  $group: {
+      _id: {cookie: "$cookies"},
+      requests: {$sum: 1}
+    }
+  },
+  {$out: "cookiesnear"}
+]
+)
+show collections
+db.cookiesnear.find()

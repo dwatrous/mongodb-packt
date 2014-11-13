@@ -1,0 +1,3 @@
+http://docs.mongodb.org/manual/core/read-preference/
+http://api.mongodb.org/python/current/examples/high_availability.html
+http://php.net/manual/en/mongo.readpreferences.php

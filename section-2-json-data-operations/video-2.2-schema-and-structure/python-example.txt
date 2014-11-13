@@ -1,0 +1,17 @@
+##### MongoDB Usage Python on Linux #####
+apt-get install python-setuptools
+easy_install pymongo
+   
+root@mongo-install:~# python
+Python 2.7.6 (default, Mar 22 2014, 22:59:56)
+[GCC 4.8.2] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>> from pymongo import MongoClient
+>>> client = MongoClient()
+>>> db = client.things
+>>> coll = db.stuff
+>>> document_id = coll.insert({"name": "Daniel"})
+>>> document_id
+ObjectId('53cadfbb867d240ae0b57166')
+>>> coll.find_one()
+{u'_id': ObjectId('53cadfbb867d240ae0b57166'), u'name': u'Daniel'}

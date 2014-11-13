@@ -1,0 +1,4 @@
+##### Manage git #####
+cd /opt/backup
+git log
+git checkout sha1-of-revision

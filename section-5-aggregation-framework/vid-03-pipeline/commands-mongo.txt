@@ -1,0 +1,75 @@
+mongo
+use statsdb
+show collections
+
+# $geoNear
+db.statistics.find().limit(1).pretty()
+db.statistics.ensureIndex({loc: "2dsphere"})
+db.statistics.aggregate([
+  {
+    $geoNear: {
+      near: {
+        type: "Point",
+        coordinates: [-93.609871,41.588173]
+      },
+      distanceField: "dist.calculated",
+      limit: 5,
+      includeLocs: "dist.location",
+      spherical: true
+    }
+  }
+]).pretty()
+
+# $group
+db.statistics.aggregate([
+  {
+    $group: {
+      _id: {action: "$action"},
+      min_request_time: {$min: "$request_time_milliseconds"},
+      average_request_time: {$avg: "$request_time_milliseconds"},
+      count: {"$sum": 1}
+    }
+  }
+])
+
+# limit
+db.statistics.aggregate([{$limit: 2}]).pretty()
+
+# match (only for specific owner)
+db.statistics.aggregate([{$match: {owner: ObjectId("543f227c0208373c53ba4afb")}}]).pretty()
+
+# project (reshape document)
+db.statistics.aggregate([
+  {
+    $project: {
+      _id: "$_id",
+      user_action: "$action",
+      duration_ms: "$request_time_milliseconds"
+    }
+  }
+]).pretty()
+
+# sort (return newest first)
+db.statistics.aggregate([{$sort: {request_date: -1}}]).pretty()
+
+# unwind
+db.statistics.aggregate([{$unwind: "$cookies"}]).pretty()
+
+# multiple stage example
+db.statistics.aggregate([
+  {
+    $project: {
+      _id: "$_id",
+      user_action: "$action",
+      duration_ms: "$request_time_milliseconds"
+    }
+  },
+  {
+    $group: {
+      _id: {action: "$user_action"},
+      min_duration: {$min: "$duration_ms"},
+      avg_duration: {$avg: "$duration_ms"},
+      count: {"$sum": 1}
+    }
+  }
+]).pretty()

@@ -1,0 +1,6 @@
+# install mongod as a Windows Service
+'C:\Program Files\MongoDB 2.6 Standard\bin\mongod.exe' --config C:\mongo\mongo.cfg --install
+
+# start mongod
+net start MongoDB
+

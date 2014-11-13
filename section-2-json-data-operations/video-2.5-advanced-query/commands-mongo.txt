@@ -1,0 +1,25 @@
+use coursetracker
+
+#### Advanced Query MongoDB ####
+
+# Query using regular expression
+db.student.find({"name.first": {$regex: "en"}})
+db.student.find({"name.first": {$regex: "^j"}})
+db.student.find({"name.first": {$regex: "^j", $options: 'i'}})
+db.student.find({"name.first": /da/i})
+
+# Query return specific fields
+db.student.find({}, {"email": 1})
+db.student.find({}, {"email": 1, "_id": 0})
+
+# Query using slice projection on course_gpas
+db.student.find({}, {"course_gpas": {$slice: -5}}).pretty()
+db.student.find({}, {"course_gpas": {$slice: [10, 8]}}).pretty()
+
+# Query using elemMatch projection on test_scores
+db.student.find({}, {"test_scores": {$elemMatch: {score: {$gt: 650}}}})
+db.student.find({}, {"test_scores": {$elemMatch: {"score": {$gt: 650}}}}).sort({"test_scores.score": -1})
+
+# Query more deliberately
+db.student.find({}, {"test_scores": {$elemMatch: {score: {$gt: 10}}}})
+db.student.find({}, {"test_scores": {$elemMatch: {score: {$gt: 10}, "test": "SAT"}}})

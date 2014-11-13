@@ -1,0 +1,15 @@
+CREATE DATABASE coursetracker;
+USE coursetracker;
+
+CREATE TABLE IF NOT EXISTS coursetracker.instructor (
+    id MEDIUMINT NOT NULL AUTO_INCREMENT,
+    firstname CHAR(30) NOT NULL,
+    lastname CHAR(30) NOT NULL,
+    email CHAR(60) NOT NULL,
+    bio TEXT NULL,
+    PRIMARY KEY (id)
+);
+
+INSERT INTO coursetracker.instructor (firstname, lastname, email, bio) values ("Wally", "Binns", "wally.r.binns@ssu.edu", "I was born in the middle of my mother's doctoral dissertation on Faraday Cage isolation. I've been an academic ever since...");
+
+SELECT * FROM instructor;

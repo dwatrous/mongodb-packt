@@ -1,0 +1,26 @@
+use coursetracker
+db.courses.find().limit(1).pretty()
+
+db.students.find().limit(1).pretty()
+
+# produce a listing of student full name and how many courses he/she is taking
+map_course_report_names = function() { 
+  emit(this._id, {name: this.name.first+' '+this.name.last, numbercourses: 0});
+}
+
+map_course_report_number = function() { 
+  this.students.forEach(function(value) {
+    emit(value, {name: '', numbercourses: 1});
+  });
+}
+
+# store a couple of documents to validate our map functions
+var course = db.courses.findOne();
+var student = db.students.findOne();
+
+var emit = function(key, value) {
+    print("key: " + key + "  value: " + tojson(value));
+}
+
+map_course_report_names.apply(student);
+map_course_report_number.apply(course);

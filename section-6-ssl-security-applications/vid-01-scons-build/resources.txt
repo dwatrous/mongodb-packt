@@ -1,0 +1,3 @@
+http://docs.mongodb.org/manual/tutorial/configure-ssl/
+http://www.mongodb.org/about/contributors/tutorial/build-mongodb-from-source/
+http://www.mongodb.org/downloads

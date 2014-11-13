@@ -1,0 +1,107 @@
+mongo
+use statsdb
+
+# comparison operators
+db.statistics.aggregate([
+  {
+    $project: {
+      sub_half_second: {$lt: ["$request_time_milliseconds",500]},
+      request_time: "$request_time_milliseconds"
+    }
+  }
+])
+
+# boolean operators
+db.statistics.aggregate([
+  {
+    $project: {
+      between_quarter_half_second: {
+        $and: [
+          {$gte: ["$request_time_milliseconds",250]},
+          {$lte: ["$request_time_milliseconds",500]}
+        ]
+      },
+      request_time: "$request_time_milliseconds"
+    }
+  }
+])
+
+# sets
+db.statistics.aggregate([
+  {
+    $project: {
+      cookies: "$cookies",
+      isadmin: {$setEquals: [["session","admin"],"$cookies"]}
+    }
+  }
+])
+db.statistics.aggregate([
+  {
+    $project: {
+      cookies: "$cookies",
+      hassession: {$setIsSubset: [["session"],"$cookies"]}
+    }
+  }
+])
+
+# arithmetic
+db.statistics.aggregate([
+  {
+    $project: {
+      request_time: "$request_time_milliseconds",
+      network_adjusted_request_time: {$multiply: ["$request_time_milliseconds",0.8]}
+    }
+  }
+])
+
+# string
+db.statistics.aggregate([
+  {
+    $project: {
+      request_summary: {
+        $concat: [
+          {$toLower: "$action"},
+          ",",
+          {$toLower: "$request_method"},
+          ",",
+          "$request_uri"
+        ]
+      },
+      action: "$action",
+      method: "$request_method",
+      uri: "$request_uri"
+    }
+  }
+])
+
+# array
+db.statistics.aggregate([{$project: {num_cookies: {$size: "$cookies"}, cookies: "$cookies"}}])
+
+# date
+db.statistics.aggregate([
+  {
+    $project: {
+      "isodate": "$request_date",
+      year: {$year: "$request_date"},
+      month: {$month: "$request_date"},
+      day: {$dayOfMonth: "$request_date"},
+      hours: {$hour: "$request_date"},
+      minutes: {$minute: "$request_date"},
+      seconds: {$second: "$request_date"}
+    }
+  }
+]).pretty()
+
+# accumulators
+db.statistics.aggregate([
+  {
+    $group: {
+      _id: "$action",
+      average: {$avg: "$request_time_milliseconds"},
+      maximum: {$max: "$request_time_milliseconds"},
+      minimum: {$min: "$request_time_milliseconds"},
+      sum: {$sum: "$request_time_milliseconds"}
+    }
+  }
+])
+

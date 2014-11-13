@@ -1,0 +1,3 @@
+http://docs.mongodb.org/manual/tutorial/query-documents/
+http://docs.mongodb.org/manual/reference/operator/query/
+http://docs.mongodb.org/manual/indexes/

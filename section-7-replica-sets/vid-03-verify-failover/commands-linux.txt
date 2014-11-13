@@ -1,0 +1,11 @@
+##### connect to mongod instance #####
+~/mongodb-linux-x86_64-2.6.3/bin/mongo --port 27017
+~/mongodb-linux-x86_64-2.6.3/bin/mongo --port 27018
+
+screen -ls
+screen -X -S [ID] quit
+
+##### (re)start mongod #####
+screen -d -m -S mongo-rs1 ~/mongodb-linux-x86_64-2.6.3/bin/mongod --port 27017 --dbpath ~/mongo/data-rs1 --replSet rs0 --smallfiles --oplogSize 128 --logpath ~/mongo/logs/mongo-rs1.log
+screen -d -m -S mongo-rs2 ~/mongodb-linux-x86_64-2.6.3/bin/mongod --port 27018 --dbpath ~/mongo/data-rs2 --replSet rs0 --smallfiles --oplogSize 128 --logpath ~/mongo/logs/mongo-rs2.log
+screen -d -m -S mongo-rs3 ~/mongodb-linux-x86_64-2.6.3/bin/mongod --port 27019 --dbpath ~/mongo/data-rs3 --replSet rs0 --smallfiles --oplogSize 128 --logpath ~/mongo/logs/mongo-rs3.log

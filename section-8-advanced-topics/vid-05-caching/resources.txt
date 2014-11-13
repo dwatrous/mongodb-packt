@@ -1,0 +1,8 @@
+http://software.danielwatrous.com/big-data-cache-approaches/
+http://memcached.org/
+http://redis.io/
+http://nginx.com/resources/admin-guide/caching/
+https://www.varnish-cache.org/
+http://ehcache.org/
+http://php.net/manual/en/book.apc.php
+http://beaker.readthedocs.org/en/latest/

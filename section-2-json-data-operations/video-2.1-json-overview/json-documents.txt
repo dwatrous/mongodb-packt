@@ -1,0 +1,11 @@
+# Student
+{"name": {"first": "John", "last": "Shore"}, "email": "john.shore@gmail.com", "major": "Electrical Engineering"}
+
+# Instructor
+{"name": {"first": "Wally", "middle": "r", "last": "Binns"}, "email": "wally.r.binns@ssu.edu", "bio": "I was born in the middle of my mother's doctoral dissertation on Faraday Cage isolation. I've been an academic ever since...", "publications": [], "courses": []}
+
+# Course
+{"name": "History of the World 1010", "description": "A bunch of really interesting things that actually happened", "students": [], "ratings": []}
+
+# BSON Student
+{ "_id" : ObjectId("53e66b7aa3d7caa9c59370cc"), "name" : { "first" : "John", "last" : "Shore" }, "email" : "john.shore@gmail.com", "major" : "Electrical Engineering" }

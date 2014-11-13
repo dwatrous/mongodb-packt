@@ -1,0 +1,46 @@
+# for data bulk import see bulk-data-import.js
+mongo coursetracker bulk-data-import.js
+
+#### Query MongoDB ####
+
+mongo
+use coursetracker
+
+# Document count
+db.student.count()
+
+# Query single document
+db.student.find({"name.first": "Wendell"}).pretty()
+
+# Remove that record
+db.student.remove({"name.first": "Wendell"})
+
+# Document count (one less than before)
+db.student.count()
+
+# Query single document (nothing returend)
+db.student.find({"name.first": "Wendell"}).pretty()
+
+# Remove all records
+db.student.remove({})
+
+# Document count (zero records)
+db.student.count()
+
+# Display all collections, of which student is one
+show collections
+
+# drop an entire collection
+db.student.drop()
+
+# Display all collections. Notice that student is no longer there
+show collections
+
+# Display databases
+show dbs
+
+# drop an entire database
+db.dropDatabase()
+
+# Display databases (coursetracker is now gone)
+show dbs

@@ -1,0 +1,16 @@
+##### Install git #####
+sudo apt-get -y install git
+
+##### Manage git #####
+cd /opt/backup
+git config --global user.email "daniel@domain.com"
+git config --global user.name "Daniel Watrous"
+git init
+git add *
+git commit -m "First backup of database"
+git log
+
+
+git status
+git commit -a -m "Second backup of database"
+git log

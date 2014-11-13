@@ -1,0 +1,47 @@
+##### Manual Install Linux #####
+wget https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-2.6.3.tgz
+tar -xzvf mongodb-linux-x86_64-2.6.3.tgz
+mkdir -p ~/mongo/logs
+
+# build a replica set
+mkdir -p ~/mongo/data/s1/rs1
+mkdir -p ~/mongo/data/s1/rs2
+mkdir -p ~/mongo/data/s1/rsarbiter
+# start mongod
+screen -d -m -S mongo-s1-rs1 ~/mongodb-linux-x86_64-2.6.3/bin/mongod --port 27017 --dbpath ~/mongo/data/s1/rs1 --replSet rs0 --smallfiles --oplogSize 128 --logpath ~/mongo/logs/mongo-s1-rs1.log
+screen -d -m -S mongo-s1-rs2 ~/mongodb-linux-x86_64-2.6.3/bin/mongod --port 27018 --dbpath ~/mongo/data/s1/rs2 --replSet rs0 --smallfiles --oplogSize 128 --logpath ~/mongo/logs/mongo-s1-rs2.log
+screen -d -m -S mongo-s1-rsarbiter ~/mongodb-linux-x86_64-2.6.3/bin/mongod --port 30000 --dbpath ~/mongo/data/s1/rsarbiter --replSet rs0 --smallfiles --noprealloc --nojournal --logpath ~/mongo/logs/mongo-s1-rsarbiter.log
+screen -ls
+
+# copy bulk-data-import.js to the server
+
+# connect to mongod and setup rs0
+~/mongodb-linux-x86_64-2.6.3/bin/mongo --port 27017
+
+# build a replica set
+mkdir -p ~/mongo/data/s2/rs1
+mkdir -p ~/mongo/data/s2/rs2
+mkdir -p ~/mongo/data/s2/rsarbiter
+# start mongod
+screen -d -m -S mongo-s2-rs1 ~/mongodb-linux-x86_64-2.6.3/bin/mongod --port 27019 --dbpath ~/mongo/data/s2/rs1 --replSet rs1 --smallfiles --oplogSize 128 --logpath ~/mongo/logs/mongo-s2-rs1.log
+screen -d -m -S mongo-s2-rs2 ~/mongodb-linux-x86_64-2.6.3/bin/mongod --port 27020 --dbpath ~/mongo/data/s2/rs2 --replSet rs1 --smallfiles --oplogSize 128 --logpath ~/mongo/logs/mongo-s2-rs2.log
+screen -d -m -S mongo-s2-rsarbiter ~/mongodb-linux-x86_64-2.6.3/bin/mongod --port 30001 --dbpath ~/mongo/data/s2/rsarbiter --replSet rs1 --smallfiles --noprealloc --nojournal --logpath ~/mongo/logs/mongo-s2-rsarbiter.log
+
+# connect to mongod and setup rs0
+~/mongodb-linux-x86_64-2.6.3/bin/mongo --port 27019
+
+# start the config database servers
+mkdir -p ~/mongo/data/configdb1
+mkdir -p ~/mongo/data/configdb2
+mkdir -p ~/mongo/data/configdb3
+screen -d -m -S mongo-cfg1 ~/mongodb-linux-x86_64-2.6.3/bin/mongod --configsvr --port 27119 --dbpath ~/mongo/data/configdb1 --logpath ~/mongo/logs/mongo-cfg1.log
+screen -d -m -S mongo-cfg2 ~/mongodb-linux-x86_64-2.6.3/bin/mongod --configsvr --port 27120 --dbpath ~/mongo/data/configdb2 --logpath ~/mongo/logs/mongo-cfg2.log
+screen -d -m -S mongo-cfg3 ~/mongodb-linux-x86_64-2.6.3/bin/mongod --configsvr --port 27121 --dbpath ~/mongo/data/configdb3 --logpath ~/mongo/logs/mongo-cfg3.log
+
+# start mongos
+screen -d -m -S mongos ~/mongodb-linux-x86_64-2.6.3/bin/mongos --configdb localhost:27119,localhost:27120,localhost:27121 --port 27200
+
+screen -ls
+
+# connect to mongod and setup shard
+~/mongodb-linux-x86_64-2.6.3/bin/mongo --port 27200

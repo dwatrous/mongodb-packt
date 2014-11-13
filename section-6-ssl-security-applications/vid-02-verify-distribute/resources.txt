@@ -1,0 +1,2 @@
+http://docs.mongodb.org/manual/tutorial/configure-ssl/
+http://demarcsek92.blogspot.com/2014/05/mongodb-ssl-setup.html

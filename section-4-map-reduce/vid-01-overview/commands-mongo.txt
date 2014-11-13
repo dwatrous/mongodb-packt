@@ -1,0 +1,29 @@
+# for data bulk import see bulk-data-import.js
+mongo coursetracker bulk-data-import.js
+
+db.instructors.find().pretty()
+db.courses.find().pretty()
+db.students.find().pretty()
+
+# find out how many courses each student has
+map_number_courses = function() { 
+  this.students.forEach(function(value) {
+    emit(value, 1);
+  });
+}
+
+reduce_number_courses = function(key, values) {
+    var result = 0;
+ 
+    values.forEach(function(value) {
+      result += value;
+    });
+ 
+    return result;
+}
+
+result = db.courses.mapReduce(map_number_courses, reduce_number_courses, {out: {replace: "numbercourses"}});
+
+show collections
+
+db.numbercourses.find()

@@ -1,0 +1,9 @@
+# update configuration
+vi ~/mongo/mongo.cfg
+
+##### start mongod #####
+~/mongo/bin/mongod --config ~/mongo/mongo.cfg
+
+
+# connect to the mongo shell
+~/mongo/bin/mongo localhost:16687/admin --ssl --sslCAFile /etc/ssl/mongod.pem --sslPEMKeyFile /etc/ssl/mongo-client.pem

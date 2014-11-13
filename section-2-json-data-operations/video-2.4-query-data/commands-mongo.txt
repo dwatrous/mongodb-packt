@@ -1,0 +1,37 @@
+# for student documents see bulk-student-import.js
+mongo coursetracker bulk-student-import.js
+
+use coursetracker
+
+#### Query MongoDB ####
+
+# Document count
+db.student.count()
+
+# Query all documents (iteration)
+db.student.find({})
+it
+
+# Query with limit
+db.student.find({}).limit(4)
+
+# Query with sort + limit
+db.student.find({}).sort({"name.first": -1}).limit(4)
+db.student.find({}).sort({"name.first": 1}).limit(4)
+
+# Basic Query
+db.student.find({"email": "lee2331@aol.com"}).pretty()
+
+# Query embedded documents
+db.student.find({"name.first": "Jeff"}).pretty()
+db.student.find({"name": {"first": "Jeff"}}).pretty()
+db.student.find({"name": {"first": "Jeff", "last": "Holland"}})
+
+# Create an index
+db.student.ensureIndex({name: 1 })
+
+# Show indexes on student
+db.student.getIndexes()
+
+# Show all indexes
+db.system.indexes.find()

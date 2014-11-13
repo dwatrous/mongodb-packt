@@ -1,0 +1,26 @@
+
+# produce a listing of student full name and how many courses he/she is taking
+reduce_course_report = function(key, values) {
+    var result = {name: '', numbercourses: 0};
+ 
+    values.forEach(function(value) {
+      result.numbercourses += value.numbercourses;
+      if (result.name === '') {
+        result.name = value.name;
+      }
+    });
+ 
+    return result;
+}
+
+var course_map_output = {"jeff": [{"name": "", "numbercourses": 1}, {"name": "", "numbercourses": 1}]};
+var student_map_output = {"jeff": [{"name": "Jeff Holland", "numbercourses": 0}]};
+
+reduce_course_report.apply(null, ['jeff', student_map_output.jeff])
+reduce_course_report.apply(null, ['jeff', course_map_output.jeff])
+
+result = db.courses.mapReduce(map_course_report_number, reduce_course_report, {out: {replace: "coursereport"}});
+db.coursereport.find()
+
+result = db.students.mapReduce(map_course_report_names, reduce_course_report, {out: {reduce: "coursereport"}});
+db.coursereport.find()

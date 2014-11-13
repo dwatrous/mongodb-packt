@@ -1,0 +1,5 @@
+http://docs.mongodb.org/manual/core/authentication/
+http://docs.mongodb.org/manual/core/authorization/
+http://docs.mongodb.org/manual/reference/configuration-options/
+http://docs.mongodb.org/manual/reference/built-in-roles/
+http://docs.mongodb.org/manual/reference/method/#user-management-methods
